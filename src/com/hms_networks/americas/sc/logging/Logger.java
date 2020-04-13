@@ -114,7 +114,7 @@ public class Logger {
               + LOG_FILE_EXTENSION);
           nextLogFile.delete();
         } catch (Exception e) {
-          Logger.LOG_SER("Could not delete next log file in sequence!");
+          Logger.LOG_SERIOUS("Could not delete next log file in sequence!");
           Logger.LOG_EXCEPTION(e);
         }
       }
@@ -178,7 +178,7 @@ public class Logger {
             + LOG_FILE_EXTENSION);
         nextLogFile.delete();
       } catch (Exception e) {
-        Logger.LOG_SER("Could not delete next log file in sequence!");
+        Logger.LOG_SERIOUS("Could not delete next log file in sequence!");
         Logger.LOG_EXCEPTION(e);
       }
 
