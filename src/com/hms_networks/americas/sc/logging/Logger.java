@@ -9,8 +9,8 @@ import java.io.StringWriter;
 
 /**
  * Logger.java
- * <p>
- * Provides an interface for managing log output using log levels.
+ *
+ * <p>Provides an interface for managing log output using log levels.
  *
  * @since 1.0
  * @author HMS Networks, MU Americas Solution Center
@@ -85,10 +85,10 @@ public class Logger {
 
       if (isLoggingToFile) {
         /* Look for an unused log file index and set the currFileNumber to that index. */
-        for(int i = 1; i <= MAX_NUM_LOG_FILES; i++) {
+        for (int i = 1; i <= MAX_NUM_LOG_FILES; i++) {
           try {
             File file = new File(LOG_FILE_PATH + LOG_FILE_NAME + i + LOG_FILE_EXTENSION);
-            if(!file.exists()) {
+            if (!file.exists()) {
               currFileNumber = i;
               break;
             }
@@ -110,8 +110,8 @@ public class Logger {
         }
 
         try {
-          File nextLogFile = new File(LOG_FILE_PATH + LOG_FILE_NAME + nextFileNumber
-              + LOG_FILE_EXTENSION);
+          File nextLogFile =
+              new File(LOG_FILE_PATH + LOG_FILE_NAME + nextFileNumber + LOG_FILE_EXTENSION);
           nextLogFile.delete();
         } catch (Exception e) {
           Logger.LOG_SERIOUS("Could not delete next log file in sequence!");
@@ -147,8 +147,7 @@ public class Logger {
   public static void LOG(int level, String logString) {
     if (level <= loggingLevel && isLoggingToFile) {
       LOG_TO_FILE(logString);
-    }
-    else if (level <= loggingLevel) {
+    } else if (level <= loggingLevel) {
       System.out.println(logString);
     }
   }
@@ -174,8 +173,8 @@ public class Logger {
 
       /* Delete the next file in the log entries. This marks where the application left off. */
       try {
-        File nextLogFile = new File(LOG_FILE_PATH + LOG_FILE_NAME + nextFileNumber
-            + LOG_FILE_EXTENSION);
+        File nextLogFile =
+            new File(LOG_FILE_PATH + LOG_FILE_NAME + nextFileNumber + LOG_FILE_EXTENSION);
         nextLogFile.delete();
       } catch (Exception e) {
         Logger.LOG_SERIOUS("Could not delete next log file in sequence!");
@@ -197,7 +196,7 @@ public class Logger {
     BufferedWriter logBufferedWriter = null;
 
     /* Build a log entry string (timestamp + logString) */
-    String formattedLogString = ("[" + System.currentTimeMillis() +"] " + logString + "\n");
+    String formattedLogString = ("[" + System.currentTimeMillis() + "] " + logString + "\n");
 
     /* Write the log entry to the file */
     try {
@@ -214,8 +213,7 @@ public class Logger {
       logFileWriter.close();
 
       numCharsWrittenToFile += formattedLogString.length();
-    } catch (IOException e)
-    {
+    } catch (IOException e) {
       /*
        * Do not attempt to call LOG_EXCEPTION() here as it could cause an infinite loop
        * due to recursion. Write stacktrace to realtime log.
