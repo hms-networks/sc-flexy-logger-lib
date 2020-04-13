@@ -7,7 +7,8 @@ THE CODE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. HMS DOES NOT WARRANT 
 
 1. [Description](#description)
 2. [Log Level](#log-level)
-3. [Dependencies](#dependencies)
+3. [Developer Documentation](#developer-documentation)
+4. [Dependencies](#dependencies)
 
 ---
 
@@ -28,6 +29,10 @@ There are seven levels of configurable log level. The logging level is set by th
 | 2, -2 (Serious)  | Serious application log messages (Errors) |
 | 1, -1 (Critical) | Critical application log messages (Startup, Initialization, Unrecoverable Error) |
 | 0 (None)         | Logging is disabled |
+
+## [Developer Documentation](#table-of-contents)
+
+Developer documentation is available in Javadoc format at [https://hms-networks.github.io/sc-flexy-logger-lib/index.html](https://hms-networks.github.io/sc-flexy-logger-lib/index.html).
 
 ## [Dependencies](#table-of-contents)
 None
