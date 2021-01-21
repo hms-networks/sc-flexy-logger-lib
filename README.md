@@ -32,7 +32,7 @@ There are seven levels of configurable log level. The logging level is set by th
 
 ## [Developer Documentation](#table-of-contents)
 
-Developer documentation is available in Javadoc format at [https://hms-networks.github.io/sc-flexy-logger-lib/index.html](https://hms-networks.github.io/sc-flexy-logger-lib/index.html).
+Developer documentation is available in Javadoc format found in the release package [https://github.com/hms-networks/sc-flexy-logger-lib/releases](https://github.com/hms-networks/sc-flexy-logger-lib/releases).
 
 ## [Dependencies](#table-of-contents)
 None
