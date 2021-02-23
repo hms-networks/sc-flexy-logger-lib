@@ -145,10 +145,12 @@ public class Logger {
    * @param logString string to log
    */
   public static void LOG(int level, String logString) {
-    if (level <= loggingLevel && isLoggingToFile) {
-      LOG_TO_FILE(logString);
-    } else if (level <= loggingLevel) {
+    if (level <= loggingLevel) {
       System.out.println(logString);
+
+      if (isLoggingToFile) {
+        LOG_TO_FILE(logString);
+      }
     }
   }
 
