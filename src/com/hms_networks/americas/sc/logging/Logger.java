@@ -62,8 +62,29 @@ public class Logger {
   /** Number of chars written to current log file */
   private static long numCharsWrittenToFile = 0;
 
+  /** Indicator if logging to realtime logs */
+  private static boolean isLoggingToRealtime = true;
+
   /** Indicator if logging to file */
   private static boolean isLoggingToFile = false;
+
+  /**
+   * Enable logging to Flexy's realtime logs
+   *
+   * @since 1.1
+   */
+  public static void ENABLE_REALTIME_LOG() {
+    isLoggingToRealtime = true;
+  }
+
+  /**
+   * Disable logging to Flexy's realtime logs
+   *
+   * @since 1.1
+   */
+  public static void DISABLE_REALTIME_LOG() {
+    isLoggingToRealtime = false;
+  }
 
   /**
    * Set the log level for this class
@@ -146,8 +167,9 @@ public class Logger {
    */
   public static void LOG(int level, String logString) {
     if (level <= loggingLevel) {
-      System.out.println(logString);
-
+      if (isLoggingToRealtime) {
+        System.out.println(logString);
+      }
       if (isLoggingToFile) {
         LOG_TO_FILE(logString);
       }
