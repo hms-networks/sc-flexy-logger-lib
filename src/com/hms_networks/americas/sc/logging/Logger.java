@@ -65,6 +65,9 @@ public class Logger {
   /** Indicator if logging to realtime logs */
   private static boolean isLoggingToRealtime = true;
 
+  /** Indicator if logging to realtime logs */
+  private static boolean isLoggingToSocket = false;
+
   /** Indicator if logging to file */
   private static boolean isLoggingToFile = false;
 
@@ -84,6 +87,24 @@ public class Logger {
    */
   public static void DISABLE_REALTIME_LOG() {
     isLoggingToRealtime = false;
+  }
+
+  /**
+   * Enable logging to socket connection
+   *
+   * @since 1.1
+   */
+  public static void ENABLE_SOCKET_LOG() {
+    isLoggingToSocket = true;
+  }
+
+  /**
+   * Disable logging to socket connection
+   *
+   * @since 1.1
+   */
+  public static void DISABLE_SOCKET_LOG() {
+    isLoggingToSocket = false;
   }
 
   /**
@@ -172,6 +193,9 @@ public class Logger {
       }
       if (isLoggingToFile) {
         LOG_TO_FILE(logString);
+      }
+      if (isLoggingToSocket) {
+        SocketLogger.LOG(logString);
       }
     }
   }
