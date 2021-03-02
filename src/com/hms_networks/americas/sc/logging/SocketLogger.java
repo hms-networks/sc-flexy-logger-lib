@@ -91,6 +91,7 @@ public class SocketLogger implements Runnable {
 
   /** Close the socket server connection */
   private static void CLOSE() {
+    socketConnectionState = STATE_DISCONNECTED;
     Logger.LOG_DEBUG("SocketLogger connection closing.");
 
     // Try to close all elements of connection.
@@ -109,8 +110,6 @@ public class SocketLogger implements Runnable {
     } catch (IOException e) {
       Logger.LOG_DEBUG("SocketLogger socket server connection close failed.");
     }
-
-    socketConnectionState = STATE_DISCONNECTED;
   }
 
   /**
@@ -181,8 +180,6 @@ public class SocketLogger implements Runnable {
           writeStringToSocket(logEntryFormatted);
           wasLogged = true;
         } catch (IOException e) {
-          // Socket is no longer connected, close resources and reopen
-          Logger.LOG_DEBUG("SocketLogger connection lost.");
           CLOSE();
           OPEN();
         }
