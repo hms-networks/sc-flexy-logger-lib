@@ -2,6 +2,7 @@ package com.hms_networks.americas.sc.logging;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.io.Connector;
 import javax.microedition.io.ServerSocketConnection;
 import javax.microedition.io.SocketConnection;
@@ -77,8 +78,17 @@ public class SocketLogger implements Runnable {
       try {
         socketServerConnection =
             (ServerSocketConnection) Connector.open("socket://:" + SOCKET_PORT);
-      } catch (Exception e) {
-        Logger.LOG_DEBUG("SocketLogger connection could not open.");
+      } catch (ConnectionNotFoundException e) {
+        Logger.LOG_DEBUG("SocketLogger connection could not open (ConnectionNotFoundException).");
+        socketConnectionState = STATE_DISCONNECTED;
+      } catch (IllegalArgumentException e) {
+        Logger.LOG_DEBUG("SocketLogger connection could not open (IllegalArgumentException).");
+        socketConnectionState = STATE_DISCONNECTED;
+      } catch (SecurityException e) {
+        Logger.LOG_DEBUG("SocketLogger connection could not open (SecurityException).");
+        socketConnectionState = STATE_DISCONNECTED;
+      } catch (IOException e) {
+        Logger.LOG_DEBUG("SocketLogger connection could not open (IOException).");
         socketConnectionState = STATE_DISCONNECTED;
       }
       if (socketConnectionState == STATE_CONNECTING) {
