@@ -144,16 +144,13 @@ public class SocketLogger implements Runnable {
    * @param logEntry string to log
    */
   public static void LOG(String logEntry) {
-    if (socketConnectionState == STATE_CONNECTED) {
-      try {
         if (logEntry.length() > 0) {
           // Format log entries "Timestamp: logEntry\n"
           String logEntryFormatted = System.currentTimeMillis() + ": " + logEntry + "\n";
 
-          // Convert string to byte array
-          byte[] logByteArray = logEntryFormatted.getBytes("UTF-8");
-          dataOuputStream.write(logByteArray);
-        }
+      if (socketConnectionState == STATE_CONNECTED) {
+        try {
+          writeStringToSocket(logEntryFormatted);
       } catch (IOException e) {
         // Socket is no longer connected, close resources and reopen
         Logger.LOG_DEBUG("SocketLogger connection lost.");
@@ -164,5 +161,18 @@ public class SocketLogger implements Runnable {
       // State is disconnected, open socket connection
       OPEN();
     }
+  }
+}
+
+  /**
+   * Outputs a string on established socket connection
+   *
+   * @param s string to output
+   * @since 1.2
+   */
+  private static void writeStringToSocket(String s) throws IOException {
+    // Convert string to byte array
+    byte[] outputByteArray = s.getBytes("UTF-8");
+    dataOuputStream.write(outputByteArray);
   }
 }
