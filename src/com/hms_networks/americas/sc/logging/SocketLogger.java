@@ -58,8 +58,18 @@ public class SocketLogger implements Runnable {
   /** Socket connection state variable */
   private static int socketConnectionState = STATE_DISCONNECTED;
 
+  /** Socket log queue for storing logs while not connected */
+  private static LogQueue socketLogQueue;
+
+  /** Number of log entries able to be queued */
+  private static final int SOCKET_LOG_QUEUE_DEPTH = 50;
+
   /** Open the socket server connection */
   private static void OPEN() {
+    if (socketLogQueue == null) {
+      socketLogQueue = new LogQueue(SOCKET_LOG_QUEUE_DEPTH);
+    }
+
     if (socketConnectionState == STATE_DISCONNECTED) {
       socketConnectionState = STATE_CONNECTING;
       Logger.LOG_DEBUG("SocketLogger connection starting.");
@@ -134,6 +144,23 @@ public class SocketLogger implements Runnable {
     if (socketConnectionState == STATE_CONNECTING) {
       // Connection has been established
       socketConnectionState = STATE_CONNECTED;
+      outputQueue();
+    }
+  }
+
+  private void outputQueue() {
+    while (!socketLogQueue.isEmpty() && socketConnectionState == STATE_CONNECTED) {
+      String logEntry = socketLogQueue.poll();
+      try {
+        writeStringToSocket(logEntry);
+      } catch (IOException e) {
+
+        // Put log entry back in queue
+        socketLogQueue.addLogEntry(logEntry);
+
+        CLOSE();
+        OPEN();
+      }
     }
   }
 
@@ -144,25 +171,31 @@ public class SocketLogger implements Runnable {
    * @param logEntry string to log
    */
   public static void LOG(String logEntry) {
-        if (logEntry.length() > 0) {
-          // Format log entries "Timestamp: logEntry\n"
-          String logEntryFormatted = System.currentTimeMillis() + ": " + logEntry + "\n";
+    boolean wasLogged = false;
+    if (logEntry.length() > 0) {
+      // Format log entries "Timestamp: logEntry\n"
+      String logEntryFormatted = System.currentTimeMillis() + ": " + logEntry + "\n";
 
       if (socketConnectionState == STATE_CONNECTED) {
         try {
           writeStringToSocket(logEntryFormatted);
-      } catch (IOException e) {
-        // Socket is no longer connected, close resources and reopen
-        Logger.LOG_DEBUG("SocketLogger connection lost.");
-        CLOSE();
+          wasLogged = true;
+        } catch (IOException e) {
+          // Socket is no longer connected, close resources and reopen
+          Logger.LOG_DEBUG("SocketLogger connection lost.");
+          CLOSE();
+          OPEN();
+        }
+      } else if (socketConnectionState == STATE_DISCONNECTED) {
+        // State is disconnected, open socket connection
         OPEN();
       }
-    } else if (socketConnectionState == STATE_DISCONNECTED) {
-      // State is disconnected, open socket connection
-      OPEN();
+      if (!wasLogged) {
+        // Log entry not sent, put log entry in queue
+        socketLogQueue.addLogEntry(logEntryFormatted);
+      }
     }
   }
-}
 
   /**
    * Outputs a string on established socket connection
