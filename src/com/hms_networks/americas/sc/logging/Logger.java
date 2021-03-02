@@ -44,6 +44,9 @@ public class Logger {
   /** Constant for the max number of log files */
   private static final int MAX_NUM_LOG_FILES = 10;
 
+  /** Constant for the max number of queued logs */
+  private static final int MAX_NUM_QUEUED_LOGS = 25;
+
   /** Constant for the log file path */
   private static final String LOG_FILE_PATH = "/usr/";
 
@@ -70,6 +73,12 @@ public class Logger {
 
   /** Indicator if logging to file */
   private static boolean isLoggingToFile = false;
+
+  /** Indicator if queuing logs */
+  private static boolean isQueueing = false;
+
+  /** Queue of unprinted logs */
+  private static LogQueue logQueue;
 
   /**
    * Enable logging to Flexy's realtime logs
@@ -105,6 +114,16 @@ public class Logger {
    */
   public static void DISABLE_SOCKET_LOG() {
     isLoggingToSocket = false;
+  }
+
+  /**
+   * Enable queuing unprinted log messages
+   *
+   * @since 1.2
+   */
+  public static void ENABLE_LOG_QUEUE() {
+    isQueueing = true;
+    logQueue = new LogQueue(MAX_NUM_QUEUED_LOGS);
   }
 
   /**
@@ -197,6 +216,8 @@ public class Logger {
       if (isLoggingToSocket) {
         SocketLogger.LOG(logString);
       }
+    } else if (isQueueing) {
+      logQueue.addLogEntry(logString);
     }
   }
 
@@ -313,5 +334,16 @@ public class Logger {
    */
   public static void LOG_CRITICAL(String logString) {
     LOG(LOG_LEVEL_CRITICAL, logString);
+  }
+
+  /**
+   * Output all queued logs at critical level
+   *
+   * @param logString string to log
+   */
+  public static void DUMP_LOG_QUEUE() {
+    while (!logQueue.isEmpty()) {
+      LOG(LOG_LEVEL_CRITICAL, logQueue.poll());
+    }
   }
 }
