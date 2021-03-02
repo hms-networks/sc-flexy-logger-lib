@@ -1,5 +1,15 @@
 # Ewon Flexy Logger Library Changelog
 
+## v1.2
+### Major Changes
+- Feature: Log queuing of log entries below configured log level
+   * Logger.ENABLE_LOG_QUEUE()
+   * Logger.DUMP_LOG_QUEUE()
+- Feature: Log queuing of SocketLogger logs while disconnected. Messages queued will be outputted upon reconnection.
+### Minor Changes
+- Bugfix: Fixed infinite recursive loop when socket connection lost.
+- Updated README.md for SocketLogger
+
 ## v1.1
 ### Major Changes
 - Feature: Added socket logging functionality
