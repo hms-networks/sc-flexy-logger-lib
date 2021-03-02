@@ -53,7 +53,7 @@ public class SocketLogger implements Runnable {
   private static SocketConnection socketConnection;
 
   /** Data output stream for adding log entries to */
-  private static DataOutputStream dataOuputStream;
+  private static DataOutputStream dataOutputStream;
 
   /** Socket connection state variable */
   private static int socketConnectionState = STATE_DISCONNECTED;
@@ -85,7 +85,7 @@ public class SocketLogger implements Runnable {
 
     // Try to close all elements of connection.
     try {
-      dataOuputStream.close();
+      dataOutputStream.close();
     } catch (IOException e) {
       Logger.LOG_DEBUG("SocketLogger data output stream close failed.");
     }
@@ -121,7 +121,7 @@ public class SocketLogger implements Runnable {
       socketConnection.setSocketOption(SocketConnection.SNDBUF, SOCKET_SNDBUF_BYTES);
 
       // Open a data output stream to add log information to
-      dataOuputStream = socketConnection.openDataOutputStream();
+      dataOutputStream = socketConnection.openDataOutputStream();
     } catch (IllegalArgumentException e) {
       // Socket options are incorrect, set state to fatal error.
       Logger.LOG_DEBUG("SocketLogger invalid socket options specified.");
@@ -173,6 +173,6 @@ public class SocketLogger implements Runnable {
   private static void writeStringToSocket(String s) throws IOException {
     // Convert string to byte array
     byte[] outputByteArray = s.getBytes("UTF-8");
-    dataOuputStream.write(outputByteArray);
+    dataOutputStream.write(outputByteArray);
   }
 }
