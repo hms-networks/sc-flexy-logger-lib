@@ -7,8 +7,9 @@ THE CODE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. HMS DOES NOT WARRANT 
 
 1. [Description](#description)
 2. [Log Level](#log-level)
-3. [Developer Documentation](#developer-documentation)
-4. [Dependencies](#dependencies)
+3. [Socket Logging](#socket-logging)
+4. [Developer Documentation](#developer-documentation)
+5. [Dependencies](#dependencies)
 
 ---
 
@@ -29,6 +30,15 @@ There are seven levels of configurable log level. The logging level is set by th
 | 2, -2 (Serious)  | Serious application log messages (Errors) |
 | 1, -1 (Critical) | Critical application log messages (Startup, Initialization, Unrecoverable Error) |
 | 0 (None)         | Logging is disabled |
+
+## [Socket Logging](#table-of-contents)
+This library supports outputting log information over a raw socket connection on port 766.
+
+Netcat Example: Connect to a Flexy with IP address 10.0.0.53
+```console
+nc 10.0.0.53 766
+```
+Note: Socket logging must be enabled using ENABLE_SOCKET_LOG() method.
 
 ## [Developer Documentation](#table-of-contents)
 
