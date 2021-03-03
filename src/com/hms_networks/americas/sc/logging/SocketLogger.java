@@ -157,6 +157,7 @@ public class SocketLogger implements Runnable {
     }
   }
 
+  /** Outputs all queued log entries if possible */
   private void outputQueue() {
     while (!socketLogQueue.isEmpty() && socketConnectionState == STATE_CONNECTED) {
       String logEntry = socketLogQueue.poll();
