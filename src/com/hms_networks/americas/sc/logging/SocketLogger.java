@@ -208,6 +208,7 @@ public class SocketLogger implements Runnable {
    * Outputs a string on established socket connection
    *
    * @param s string to output
+   * @throws IOException if the socket connection is broken
    * @since 1.2
    */
   private static void writeStringToSocket(String s) throws IOException {
