@@ -336,11 +336,7 @@ public class Logger {
     LOG(LOG_LEVEL_CRITICAL, logString);
   }
 
-  /**
-   * Output all queued logs at critical level
-   *
-   * @param logString string to log
-   */
+  /** Output all queued logs at critical level */
   public static void DUMP_LOG_QUEUE() {
     while (!logQueue.isEmpty()) {
       LOG(LOG_LEVEL_CRITICAL, logQueue.poll());
