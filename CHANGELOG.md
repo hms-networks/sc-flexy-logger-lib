@@ -1,5 +1,11 @@
 # Ewon Flexy Logger Library Changelog
 
+## v1.2.1
+### Major Changes
+- None
+### Minor Changes
+- Bugfix: Fixed invalid or missing Javadocs
+
 ## v1.2
 ### Major Changes
 - Feature: Log queuing of log entries below configured log level
